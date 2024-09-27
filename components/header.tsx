@@ -3,7 +3,8 @@ import Link from "next/link";
 import React from "react";
 import { Button } from "./ui/button";
 import {PenBox} from "lucide-react"
-import { SignedIn, UserButton,SignedOut, SignInButton } from "@clerk/nextjs";
+import { SignedIn, SignedOut, SignInButton } from "@clerk/nextjs";
+import UserMenu from "./user-menu";
 
 const Header = () => {
   return (
@@ -16,7 +17,7 @@ const Header = () => {
         <Link href={"/events?create=true"}>
           <Button className="flex items-center gap-2"> <PenBox size={18} /> Create Event</Button>
         </Link>
-        <SignedIn><UserButton /></SignedIn>
+        <SignedIn><UserMenu /></SignedIn>
         <SignedOut>
           <SignInButton forceRedirectUrl={"/dashboard"}>
             <Button variant={"outline"}>login</Button>
