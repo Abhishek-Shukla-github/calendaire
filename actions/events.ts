@@ -89,3 +89,25 @@ export async function deleteUserEvent(eventId: string){
 
   return {deleteEvent}
 }
+
+export async function getEventDetails(username: string,eventId: string) {
+  const event = await db.event.findFirst({
+    where: {
+      id: eventId,
+      user: {
+        username: username,
+      },
+    },
+    include: {
+      user: {
+        select: {
+          name: true,
+          email: true,
+          imageUrl: true,
+        },
+      },
+    },
+  });
+
+  return event;
+}
