@@ -1,8 +1,8 @@
-const {useState} = require("react")
+import { useState} from "react";
 
 const useFetch = (cb) => {
     const [data, setData] = useState({})
-    const [loading, setLoading] = useState(null)
+    const [loading, setLoading] = useState(false)
     const [error, setError] = useState(null)
 
 
