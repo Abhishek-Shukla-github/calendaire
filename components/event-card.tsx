@@ -11,11 +11,18 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import useFetch from "@/hooks/useFetch";
+import { ServerEventType } from "@/types/types";
 import { Link, Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-export default function EventCard({ event, username, isPublic = false }) {
+type propType = {
+  event: ServerEventType,
+  username: string,
+  isPublic?: boolean
+}
+
+export default function EventCard({ event, username, isPublic = false }:propType) {
   const [isCopied, setIsCopied] = useState(false);
   const router = useRouter();
 
@@ -40,8 +47,9 @@ export default function EventCard({ event, username, isPublic = false }) {
     }
   };
 
-  const handleCardClick = (e) => {
-    if (e.target.tagName !== "BUTTON" && e.target.tagName !== "SVG") {
+  const handleCardClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    const target = e.target as Element
+    if (target.tagName !== "BUTTON" && target.tagName !== "SVG") {
       window?.open(
         `${window?.location.origin}/${username}/${event.id}`,
         "_blank"

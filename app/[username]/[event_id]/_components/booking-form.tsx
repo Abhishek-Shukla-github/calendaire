@@ -73,26 +73,26 @@ export default function BookingForm({ event, availability }) {
       )?.slots || []
     : [];
 
-  if (data) {
-    return (
-      <div className="text-center p-10 border bg-white">
-        <h2 className="text-2xl font-bold mb-4">Booking successful!</h2>
-        {data.meetLink && (
-          <p>
-            Join the meeting:{" "}
-            <a
-              href={data.meetLink}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-blue-500 hover:underline"
-            >
-              {data.meetLink}
-            </a>
-          </p>
-        )}
-      </div>
-    );
-  }
+  // if (data) {
+  //   return (
+  //     <div className="text-center p-10 border bg-white">
+  //       <h2 className="text-2xl font-bold mb-4">Booking successful!</h2>
+  //       {data.meetLink && (
+  //         <p>
+  //           Join the meeting:{" "}
+  //           <a
+  //             href={data.meetLink}
+  //             target="_blank"
+  //             rel="noopener noreferrer"
+  //             className="text-blue-500 hover:underline"
+  //           >
+  //             {data.meetLink}
+  //           </a>
+  //         </p>
+  //       )}
+  //     </div>
+  //   );
+  // }
 
   return (
     <div className="flex flex-col gap-8 p-10 border bg-white">

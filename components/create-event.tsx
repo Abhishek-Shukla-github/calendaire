@@ -14,7 +14,7 @@ import { Button } from "@/components/ui/button";
 import EventForm from "./event-form";
 
 export default function CreateEventDrawer() {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
 

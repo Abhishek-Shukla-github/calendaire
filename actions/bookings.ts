@@ -1,10 +1,11 @@
 "use server";
 
 import { db } from "@/lib/prisma";
+import { ClientBookingType } from "@/types/types";
 import { clerkClient } from "@clerk/nextjs/server";
 import { google } from "googleapis";
 
-export async function createBooking(bookingData) {
+export async function createBooking(bookingData: ClientBookingType) {
   try {
     // Fetch the event and its creator
     const event = await db.event.findUnique({
@@ -69,8 +70,8 @@ export async function createBooking(bookingData) {
     });
 
     return { success: true, booking, meetLink };
-  } catch (error) {
-    console.error("Error creating booking:", error);
-    return { success: false, error: error.message };
+  } catch (error: unknown) {
+    const err = error as Error;
+    return { success: false, error: err.message };
   }
 }

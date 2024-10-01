@@ -1,6 +1,7 @@
 "use server";
 
 import { db } from "@/lib/prisma";
+import { AvailabilityType, BookingType } from "@/types/types";
 import { auth } from "@clerk/nextjs/server";
 import {
   startOfDay,
@@ -32,7 +33,18 @@ export async function getUserAvailability() {
   }
 
   // Transform the availability data into the format expected by the form
-  const availabilityData = { timeGap: user.availability.timeGap };
+  const availabilityData: AvailabilityType = {
+    timeGap: user.availability.timeGap,
+    monday: { isAvailable: false, startTime: "09:00", endTime: "17:00" }, // default values
+    tuesday: { isAvailable: false, startTime: "09:00", endTime: "17:00" },
+    wednesday: { isAvailable: false, startTime: "09:00", endTime: "17:00" },
+    thursday: { isAvailable: false, startTime: "09:00", endTime: "17:00" },
+    friday: { isAvailable: false, startTime: "09:00", endTime: "17:00" },
+    saturday: { isAvailable: false, startTime: "09:00", endTime: "17:00" },
+    sunday: { isAvailable: false, startTime: "09:00", endTime: "17:00" },
+  };
+
+
 
   [
     "monday",
@@ -44,10 +56,10 @@ export async function getUserAvailability() {
     "sunday",
   ].forEach((day) => {
     const dayAvailability = user.availability.days.find(
-      (d) => d.day === day.toUpperCase()
+      (d: BookingType) => d.day === day.toUpperCase()
     );
 
-    availabilityData[day] = {
+    availabilityData[day as keyof AvailabilityType] = {
       isAvailable: !!dayAvailability,
       startTime: dayAvailability
         ? dayAvailability.startTime.toISOString().slice(11, 16)
@@ -61,7 +73,7 @@ export async function getUserAvailability() {
   return availabilityData;
 }
 
-export async function updateAvailability(data) {
+export async function updateAvailability(data: AvailabilityType) {
   const { userId } = auth();
 
   if (!userId) {
@@ -78,7 +90,8 @@ export async function updateAvailability(data) {
   }
 
   const availabilityData = Object.entries(data).flatMap(
-    ([day, { isAvailable, startTime, endTime }]) => {
+    ([day, value]) => {
+      const { isAvailable, startTime, endTime } = value as { isAvailable: boolean; startTime: string; endTime: string }
       if (isAvailable) {
         const baseDate = new Date().toISOString().split("T")[0]; // Get current date in YYYY-MM-DD format
 
@@ -120,7 +133,7 @@ export async function updateAvailability(data) {
   return { success: true };
 }
 
-export async function getEventAvailability(eventId) {
+export async function getEventAvailability(eventId: string) {
   const event = await db.event.findUnique({
     where: { id: eventId },
     include: {
@@ -156,7 +169,7 @@ export async function getEventAvailability(eventId) {
   for (let date = startDate; date <= endDate; date = addDays(date, 1)) {
     const dayOfWeek = format(date, "EEEE").toUpperCase();
     const dayAvailability = availability?.days?.find(
-      (d) => d.day === dayOfWeek
+      (d: BookingType) => d.day === dayOfWeek
     );
 
     if (dayAvailability) {
@@ -182,11 +195,11 @@ export async function getEventAvailability(eventId) {
 }
 
 function generateAvailableTimeSlots(
-  startTime,
-  endTime,
-  duration,
-  bookings,
-  dateStr,
+  startTime: Date,
+  endTime: Date,
+  duration: number,
+  bookings: BookingType[],
+  dateStr: string,
   timeGap = 0
 ) {
   const slots = [];
@@ -211,6 +224,7 @@ function generateAvailableTimeSlots(
     const isSlotAvailable = !bookings.some((booking) => {
       const bookingStart = booking.startTime;
       const bookingEnd = booking.endTime;
+      // console.log("booking.endTime",booking.endTime)
       return (
         (currentTime >= bookingStart && currentTime < bookingEnd) ||
         (slotEnd > bookingStart && slotEnd <= bookingEnd) ||

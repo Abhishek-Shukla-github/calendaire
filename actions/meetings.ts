@@ -45,7 +45,7 @@ export async function getUserMeetings(type = "upcoming") {
   return meetings;
 }
 
-export async function cancelMeeting(meetingId) {
+export async function cancelMeeting(meetingId: string) {
   const { userId } = auth();
   if (!userId) {
     throw new Error("Unauthorized");

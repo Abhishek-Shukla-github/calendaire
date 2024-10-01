@@ -1,5 +1,6 @@
 import { getUserEvents } from '@/actions/events'
 import EventCard from '@/components/event-card';
+import { ServerEventType } from '@/types/types';
 import { Suspense } from 'react';
 
 export default function EventsPage(){
@@ -19,10 +20,11 @@ const Events = async () => {
       <p>You have no events currently</p>
     </>
   }
+  console.log("events",events)
 
   return (
     <div className='grid gap-4 grid-cols-1 lg:grid-cols-4'>
-        {events?.map(event => (
+        {events?.map((event: ServerEventType) => (
           <EventCard key={event.id} event={event} username={username} />
         ))}
     </div>

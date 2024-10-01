@@ -17,6 +17,7 @@ import { updateAvailability } from "@/actions/availability";
 import { availabilitySchema } from "@/lib/validators";
 import { timeSlots } from "../data";
 import useFetch from "@/hooks/useFetch";
+import { AvailabilityType } from "@/types/types";
 
 export default function AvailabilityForm({ initialData }) {
   const {
@@ -37,7 +38,7 @@ export default function AvailabilityForm({ initialData }) {
     fn: fnupdateAvailability,
   } = useFetch(updateAvailability);
 
-  const onSubmit = async (data) => {
+  const onSubmit = async (data: AvailabilityType) => {
     await fnupdateAvailability(data);
   };
 

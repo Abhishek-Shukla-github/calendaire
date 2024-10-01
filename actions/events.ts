@@ -2,8 +2,9 @@
 import { db } from "@/lib/prisma";
 import { auth } from "@clerk/nextjs/server";
 import { eventSchema } from "@/lib/validators";
+import { ClientEventType } from "@/types/types";
 
-export async function createEvent(data) {
+export async function createEvent(data: ClientEventType) {
   const { userId } = auth();
 
   if (!userId) {

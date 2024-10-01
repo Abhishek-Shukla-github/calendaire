@@ -15,8 +15,19 @@ import { eventSchema } from "@/lib/validators";
 import { createEvent } from "@/actions/events";
 import { useRouter } from "next/navigation";
 import useFetch from "@/hooks/useFetch";
+import { ClientEventType } from "@/types/types";
 
-const EventForm = ({ onSubmitForm, initialData = {} }) => {
+type PropType = {
+  onSubmitForm: () => void
+}
+
+const EventForm = ({ onSubmitForm} : PropType) => {
+  const  initialData = {
+    title: null,
+    description: null,
+    duration: null,
+    isPrivate: null,
+  }
   const router = useRouter();
   const {
     register,
@@ -35,7 +46,7 @@ const EventForm = ({ onSubmitForm, initialData = {} }) => {
 
   const { loading, error, fn: fnCreateEvent } = useFetch(createEvent);
 
-  const onSubmit = async (data) => {
+  const onSubmit = async (data: ClientEventType) => {
     await fnCreateEvent(data);
     if (!loading && !error) onSubmitForm();
     router.refresh(); // Refresh the page to show updated data
@@ -130,7 +141,7 @@ const EventForm = ({ onSubmitForm, initialData = {} }) => {
         />
       </div>
 
-      {error && <p className="text-red-500 text-xs mt-1">{error.message}</p>}
+      {error && <p className="text-red-500 text-xs mt-1">{error}</p>}
 
       <Button type="submit" disabled={loading}>
         {loading ? "Submitting..." : "Create Event"}

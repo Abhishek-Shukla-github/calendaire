@@ -1,12 +1,14 @@
+import { AvailabilityType,ClientEventType } from "@/types/types";
 import { useState} from "react";
 
+//cb is the server action
 const useFetch = (cb) => {
     const [data, setData] = useState({})
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(null)
 
 
-    const fn = async (...args) => {
+    const fn = async (...args: ([AvailabilityType[] | ClientEventType | string])) => {
         setLoading(true);
         setError(null);
 
