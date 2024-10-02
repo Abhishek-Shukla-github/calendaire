@@ -46,7 +46,8 @@ export default function Home() {
       <div className="flex flex-col lg:flex-row items-center justify-between gap-12 mb-24">
         <div className="lg:w-1/2">
           <h1 className="text-7xl font-extrabold pb-6 gradient-title">Simplify your meet Scheduling</h1>
-          <p className="text-xl text-gray-600 mb-10">Lorem ipsum dolor sit amet consectetur adipisicing elit. Expedita, deleniti suscipit fuga in vitae laboriosam nostrum esse pariatur ullam iusto?</p>
+          <p className="text-2xl text-gray-800 mb-10">Say goodbye to the hassle of coordinating meetings! </p>
+          <p className="text-xl text-gray-600 mb-10">Calendaire is a user-friendly platform designed to streamline your scheduling process with <br />built-in <strong>Google Meet and Google Calendar integration</strong></p>
           <Link href="/dashboard">
             <Button size="lg" className="text-lg">Get Started <ArrowRight className="ml-2 h-5 w-5" /></Button>
           </Link>

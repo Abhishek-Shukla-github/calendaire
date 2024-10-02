@@ -1,10 +1,12 @@
 "use client"
 
-import { UserButton } from '@clerk/nextjs'
+import { UserButton, useUser } from '@clerk/nextjs'
+import { PersonIcon } from '@radix-ui/react-icons'
 import { ChartNoAxesGanttIcon } from 'lucide-react'
 import React from 'react'
 
 const UserMenu = () => {
+    const { user} = useUser();
   return (
     <UserButton
         appearance={{
@@ -19,6 +21,11 @@ const UserMenu = () => {
                 label='My Events'
                 labelIcon={<ChartNoAxesGanttIcon size={15} />}
                 href="/events"
+            />
+            <UserButton.Link
+                label='My Profile'
+                labelIcon={<PersonIcon />}
+                href={`/${user?.username}`}
             />
             <UserButton.Action label='manageAccount' />
         </UserButton.MenuItems>
