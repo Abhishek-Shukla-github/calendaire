@@ -1,4 +1,5 @@
 import { Suspense } from 'react';
+import { MoonLoader } from 'react-spinners';
 
 type propType = {
     children: React.ReactNode
@@ -6,7 +7,7 @@ type propType = {
 
 export default function AvailabilityLayout({children}: propType){
   return (
-    <Suspense fallback={<h3>Loading....</h3>}>
+    <Suspense fallback={<MoonLoader color="#2563eb" />}>
       {children}
     </Suspense>
   )

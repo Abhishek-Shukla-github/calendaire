@@ -4,6 +4,7 @@ import "./globals.css";
 import Header from "@/components/header";
 import {ClerkProvider} from "@clerk/nextjs"
 import CreateEventDrawer from "@/components/create-event";
+import { Toaster } from "@/components/ui/toaster";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -25,6 +26,7 @@ export default function RootLayout({
         >
           <Header />
           <main className="min-h-screen bg-gradient-to-b from-blue-50 to-white">{children}</main>
+          <Toaster />
           <footer className="bg-blue-100 py-12">
             <div className="container mx-auto px-4 text-center text-gray-600">
               <p>Created by abshukla</p>

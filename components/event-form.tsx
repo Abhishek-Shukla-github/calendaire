@@ -16,6 +16,7 @@ import { createEvent } from "@/actions/events";
 import { useRouter } from "next/navigation";
 import useFetch from "@/hooks/useFetch";
 import { ClientEventType } from "@/types/types";
+import { showToast } from "@/lib/toast";
 
 type PropType = {
   onSubmitForm: () => void
@@ -50,6 +51,7 @@ const EventForm = ({ onSubmitForm} : PropType) => {
     await fnCreateEvent(data);
     if (!loading && !error) onSubmitForm();
     router.refresh(); // Refresh the page to show updated data
+    showToast("","Event created successfully")
   };
 
   return (

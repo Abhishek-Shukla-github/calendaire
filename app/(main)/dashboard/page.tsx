@@ -8,11 +8,12 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { updateUsername } from "@/actions/user";
-import { BarLoader } from "react-spinners";
+import { BarLoader, MoonLoader } from "react-spinners";
 import useFetch from "@/hooks/useFetch";
 import { usernameSchema } from "@/lib/validators";
 import { getLatestUpdates } from "@/actions/dashboard";
 import { format } from "date-fns";
+import { showToast } from "@/lib/toast";
 
 export default function DashboardPage() {
   const { user, isLoaded } = useUser();
@@ -21,6 +22,7 @@ export default function DashboardPage() {
     register,
     handleSubmit,
     setValue,
+    watch,
     formState: { errors },
   } = useForm({
     resolver: zodResolver(usernameSchema),
@@ -45,7 +47,10 @@ export default function DashboardPage() {
 
   const onSubmit = async (data) => {
     await fnUpdateUsername(data.username);
+    showToast('','Username updated successfully');
   };
+
+  const usernameValue = watch("username");
 
   return (
     <div className="space-y-8">
@@ -77,7 +82,7 @@ export default function DashboardPage() {
               </div>
             </div>
           ) : (
-            <p>Loading updates...</p>
+            <MoonLoader color="#2563eb" />
           )}
         </CardContent>
       </Card>
@@ -105,8 +110,8 @@ export default function DashboardPage() {
             {loading && (
               <BarLoader className="mb-4" width={"100%"} color="#36d7b7" />
             )}
-            <Button type="submit" disabled={loading}>
-              Update Username
+            <Button type="submit" disabled={loading || user?.username === usernameValue || errors.username}>
+              {loading ? "Updating Username..." : "Update Username"}
             </Button>
           </form>
         </CardContent>

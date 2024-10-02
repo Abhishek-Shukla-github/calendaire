@@ -2,10 +2,11 @@ import { getUserEvents } from '@/actions/events'
 import EventCard from '@/components/event-card';
 import { ServerEventType } from '@/types/types';
 import { Suspense } from 'react';
+import { MoonLoader } from 'react-spinners';
 
 export default function EventsPage(){
   return (
-    <Suspense fallback={<h3>Loading....</h3>}>
+    <Suspense fallback={<MoonLoader color="#2563eb" />}>
       <Events />
     </Suspense>
   )

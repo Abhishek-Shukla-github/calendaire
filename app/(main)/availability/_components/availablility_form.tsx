@@ -18,6 +18,7 @@ import { availabilitySchema } from "@/lib/validators";
 import { timeSlots } from "../data";
 import useFetch from "@/hooks/useFetch";
 import { AvailabilityType } from "@/types/types";
+import { showToast } from "@/lib/toast";
 
 export default function AvailabilityForm({ initialData }) {
   const {
@@ -40,6 +41,7 @@ export default function AvailabilityForm({ initialData }) {
 
   const onSubmit = async (data: AvailabilityType) => {
     await fnupdateAvailability(data);
+    showToast('','Your availabilities are updated');
   };
 
   return (

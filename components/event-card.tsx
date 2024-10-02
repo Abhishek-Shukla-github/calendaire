@@ -11,6 +11,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import useFetch from "@/hooks/useFetch";
+import { showToast } from "@/lib/toast";
 import { ServerEventType } from "@/types/types";
 import { Link, Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -33,6 +34,7 @@ export default function EventCard({ event, username, isPublic = false }:propType
       );
       setIsCopied(true);
       setTimeout(() => setIsCopied(false), 2000); // Reset after 2 seconds
+      showToast("","Event link copied")
     } catch (err) {
       console.error("Failed to copy: ", err);
     }
@@ -44,6 +46,7 @@ export default function EventCard({ event, username, isPublic = false }:propType
     if (window?.confirm("Are you sure you want to delete this event?")) {
       await fnDeleteEvent(event.id);
       router.refresh();
+      showToast("","Event deleted successfully")
     }
   };
 

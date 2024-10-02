@@ -8,12 +8,17 @@ import { format } from "date-fns";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { createBooking } from "@/actions/bookings";
 import { bookingSchema } from "@/lib/validators";
+import { useUser } from "@clerk/nextjs";
 import "react-day-picker/style.css";
 import useFetch from "@/hooks/useFetch";
+import { Calendar, CheckCircle2Icon, Clock } from "lucide-react";
+import { PersonIcon } from "@radix-ui/react-icons";
 
 export default function BookingForm({ event, availability }) {
+  const { user} = useUser();
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedTime, setSelectedTime] = useState(null);
 
@@ -47,12 +52,10 @@ export default function BookingForm({ event, availability }) {
       console.error("Date or time not selected");
       return;
     }
-
     const startTime = new Date(
       `${format(selectedDate, "yyyy-MM-dd")}T${selectedTime}`
     );
     const endTime = new Date(startTime.getTime() + event.duration * 60000);
-
     const bookingData = {
       eventId: event.id,
       name: data.name,
@@ -65,7 +68,12 @@ export default function BookingForm({ event, availability }) {
     await fnCreateBooking(bookingData);
   };
 
-  const availableDays = availability.map((day) => new Date(day.date));
+  // const availableDays = availability.map((day) => new Date(day.date));
+  const availableDays = availability.map(day => {
+    // Create a date in the local timezone by adding the time component
+    const localDate = new Date(day.date + 'T00:00:00'); // Set to midnight local time
+    return localDate;
+});
 
   const timeSlots = selectedDate
     ? availability.find(
@@ -73,26 +81,51 @@ export default function BookingForm({ event, availability }) {
       )?.slots || []
     : [];
 
-  // if (data) {
-  //   return (
-  //     <div className="text-center p-10 border bg-white">
-  //       <h2 className="text-2xl font-bold mb-4">Booking successful!</h2>
-  //       {data.meetLink && (
-  //         <p>
-  //           Join the meeting:{" "}
-  //           <a
-  //             href={data.meetLink}
-  //             target="_blank"
-  //             rel="noopener noreferrer"
-  //             className="text-blue-500 hover:underline"
-  //           >
-  //             {data.meetLink}
-  //           </a>
-  //         </p>
-  //       )}
-  //     </div>
-  //   );
-  // }
+  if (Object.keys(data).length > 0) {
+    return (
+      <div className="p-10 border bg-white">
+        <h2 className="text-2xl font-bold">Meet Scheduled!</h2>
+        {data.meetLink && (
+          <div>
+            <p>Find the details below: </p>
+            <div className="flex items-center flex-col justify-start mt-2">
+              <div className="flex items-center mb-2 mt-2 w-full">
+                <CheckCircle2Icon className="w-8 h-8 mr-1" />
+                <p className="font-semibold text-gray-600 mr-1">With: </p>
+                <h2 className="text-blue-600 font-bold">
+                  <a
+                    href={`${window?.location.origin}/${user?.username}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-500 hover:underline"
+                  >{user?.firstName} {user?.lastName}</a>
+                </h2>
+              </div>
+              <div className="flex items-center mb-1 w-full">
+                <Clock className="w-8 h-8 mr-1"/>
+                <p className="font-semibold text-gray-600">{format(data.booking.startTime, "eee MMM dd")} at {format(data.booking.startTime, 'HH:mm')}</p>
+              </div>
+              <div className="flex items-center mb-2 w-full">
+                <PersonIcon className="w-8 h-8 mr-1"/>
+                <p className="font-semibold text-gray-600">Meet Link:
+                  <a
+                    href={data.meetLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-500 hover:underline"
+                  > {data.meetLink}</a>
+                </p>
+              </div>
+              <div className="flex items-center mb-2 w-full">
+                <Calendar className="w-8 h-8 mr-1"/>
+                <p className="font-semibold text-gray-600">Meet is also added in your Google Calendar</p>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col gap-8 p-10 border bg-white">

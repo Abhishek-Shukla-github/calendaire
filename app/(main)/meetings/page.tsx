@@ -2,6 +2,7 @@ import { Suspense } from "react";
 import { getUserMeetings } from "@/actions/meetings";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import MeetingList from "./_components/meeting_list";
+import { MoonLoader } from "react-spinners";
 
 export const metadata = {
   title: "Your Meetings | Calendaire",
@@ -16,12 +17,12 @@ export default async function MeetingsPage() {
         <TabsTrigger value="past">Past</TabsTrigger>
       </TabsList>
       <TabsContent value="upcoming">
-        <Suspense fallback={<div>Loading upcoming meetings...</div>}>
+        <Suspense fallback={<MoonLoader color="#2563eb" />}>
           <UpcomingMeetings />
         </Suspense>
       </TabsContent>
       <TabsContent value="past">
-        <Suspense fallback={<div>Loading past meetings...</div>}>
+        <Suspense fallback={<MoonLoader color="#2563eb" />}>
           <PastMeetings />
         </Suspense>
       </TabsContent>
