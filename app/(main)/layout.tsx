@@ -11,6 +11,7 @@ const navItems = [
   { href: "/events", label: "Events", icon: Calendar },
   { href: "/meetings", label: "Meetings", icon: Users },
   { href: "/availability", label: "Availability", icon: Clock },
+  { href: "/analytics", label: "Analytics", icon: BarChart },
 ];
 
 type propType = {
