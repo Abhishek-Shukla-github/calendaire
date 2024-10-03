@@ -14,6 +14,7 @@ import { usernameSchema } from "@/lib/validators";
 import { getLatestUpdates } from "@/actions/dashboard";
 import { format } from "date-fns";
 import { showToast } from "@/lib/toast";
+import { Chart } from "@/components/chart";
 
 export default function DashboardPage() {
   const { user, isLoaded } = useUser();
@@ -116,6 +117,7 @@ export default function DashboardPage() {
           </form>
         </CardContent>
       </Card>
+      <Chart />
     </div>
   );
 }
