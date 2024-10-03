@@ -15,7 +15,9 @@ import { useUser } from "@clerk/nextjs";
 import "react-day-picker/style.css";
 import useFetch from "@/hooks/useFetch";
 import { Calendar, CheckCircle2Icon, Clock } from "lucide-react";
-import { PersonIcon } from "@radix-ui/react-icons";
+import { PersonIcon, ReloadIcon } from "@radix-ui/react-icons";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function BookingForm({ event, availability }) {
   const { user} = useUser();
@@ -123,6 +125,9 @@ export default function BookingForm({ event, availability }) {
             </div>
           </div>
         )}
+        <Link href={`/${user?.username}`}>
+          <Button size="sm" className="text-sm">Book more slots <ReloadIcon className="ml-2 h-5 w-5" /></Button>
+        </Link>
       </div>
     );
   }
