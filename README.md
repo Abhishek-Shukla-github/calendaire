@@ -4,7 +4,6 @@
 
 Calendaire is a user-friendly scheduling platform that simplifies your appointment management. Built with Next.js and PostgreSQL.\
 It features seamless integration with Google Meet and Google Calendar, making it easy to schedule meetings and manage your time efficiently.\
-Whether you're coordinating with clients or organizing team events, Calendaire helps you stay organized and on track.
 
 ## List of Features
 
